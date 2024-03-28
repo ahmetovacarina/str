@@ -1,0 +1,116 @@
+<!DOCTYPE html>  
+<html lang="en">  
+<head>  
+<meta charset="UTF-8">  
+<meta name="viewport" content="width=device-width, initial-scale=1.0">  
+<title>Елаз медиа хостинг</title>  
+<link rel="stylesheet" href="one.css">  
+<style> 
+ 
+</style> 
+</head>  
+<body>  
+    <h1>Медиа Хостинг</h1> 
+ 
+    <!-- Окно для ввода нового текста --> 
+  <input type="text" id="newText"> 
+  <button onclick="changeMarqueeText()">Сохранить</button>
+  <br><br>
+
+<div class="container">  
+  <div class="window" onclick="window.location.href='tv1.html'">TV-1</div> 
+  <div class="file-list" id="fileList1"></div> <!-- Названия добавленных файлов для TV-1 -->
+  <input type="file" class="button" onchange="uploadFile(this.files, 'tv1')"> <!-- Кнопка "Добавить файл" для TV-1 -->
+  <button onclick="deleteFiles('tv1')">Удалить файлы на TV-1</button> <!-- Кнопка для удаления файлов на TV-1 -->
+  <br><br> <!-- Разделительные строки -->
+  
+</div>
+
+<div class="container">  
+  <div class="window" onclick="window.location.href='tv2.html'">TV-2</div> 
+  <div class="tv" id="tv-1"></div>
+  
+  <div class="file-list" id="fileList2"></div> <!-- Названия добавленных файлов для TV-2 -->
+  <input type="file" class="button" onchange="uploadFile(this.files, 'tv2')"> <!-- Кнопка "Добавить файл" для TV-2 -->
+  <button onclick="deleteFiles('tv2')">Удалить файлы на TV-2</button> <!-- Кнопка для удаления файлов на TV-2 -->
+ <br><br> <!-- Разделительные строки -->
+</div>
+
+<div class="container">  
+  <div class="window" onclick="window.location.href='tv3.html'">TV-3</div> 
+  <div class="file-list" id="fileList3"></div> <!-- Названия добавленных файлов для TV-3 -->
+  <input type="file" class="button" onchange="uploadFile(this.files, 'tv3')"> <!-- Кнопка "Добавить файл" для TV-3 -->
+  <button onclick="deleteFiles('tv3')">Удалить файлы на TV-3</button> <!-- Кнопка для удаления файлов на TV-3 -->
+  <br><br> <!-- Разделительные строки -->
+</div>
+
+
+<!--добавление файлов с пк-->
+<script>
+function uploadFile(files, tv) { 
+  if (files.length > 0) { 
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i]; 
+      const reader = new FileReader(); 
+      reader.onload = function(e) { 
+        localStorage.setItem(tv + i, e.target.result); // Сохраняем файлы с уникальными ключами
+        displayFile(tv + i, file.name); // Отображаем название файла
+      }; 
+      reader.readAsDataURL(file); 
+    }
+  } 
+} 
+
+// Функция для отображения названия добавленного файла
+function displayFile(key, fileName) {
+  const fileList = document.getElementById('fileList' + key.charAt(key.length - 1)); // Получаем соответствующий элемент списка файлов
+  const fileNameNode = document.createElement('p');
+  fileNameNode.textContent = fileName;
+  fileList.appendChild(fileNameNode);
+}
+
+// Функция для удаления всех файлов по ключу
+function deleteFiles(tv) {
+  const fileList = document.getElementById('fileList' + tv.charAt(tv.length - 1));
+  while (fileList.firstChild) {
+    localStorage.removeItem(tv + (fileList.childElementCount - 1));
+    fileList.removeChild(fileList.firstChild);
+  }
+}
+
+
+// Функция для изменения текста бегущей строки на TV-1
+function changeMarqueeText() {
+  const newText = document.getElementById('newText').value;
+  const tvWindow = window.open('tv1.html', 'TV-1');
+  tvWindow.onload = function() {
+    tvWindow.changeMarqueeText(newText);
+  };
+}
+</script>
+</body> 
+</html>
+
+
+<!-- http://www.elaz.local/ekran/index.php
+
+
+
+<div class="tv-container">
+  <div class="tv" id="tv-1"></div>
+  <div class="tv" id="tv-2"></div>
+  <div class="tv" id="tv-3"></div>
+</div>
+
+<script>
+function updatePreview(tvId, url) {
+  const tv = document.getElementById(tvId);
+  tv.innerHTML = `<iframe src="${url}" frameborder="0" width="100%" height="100%"></iframe>`;
+}
+
+setInterval(() => {
+  updatePreview('tv-1', 'tv1.html');
+  updatePreview('tv-2', 'tv2.html');
+  updatePreview('tv-3', 'tv3.html');
+}, 5000); // Обновление каждые 5 секунд
+</script> -->
